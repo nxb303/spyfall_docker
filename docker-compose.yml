@@ -1,0 +1,22 @@
+version: "2"
+services:
+  node:
+    image: "node-redis:latest"
+    working_dir: /home/node/app
+    user: root
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./spyfall:/home/node/app
+    expose:
+      - 80
+    command: bash -c "redis-server --daemonize yes && node app.js"
+    environment:
+      - NODE_ENV=production
+      - VIRTUAL_HOST=spyfall.nilsibox.de
+      - LETSENCRYPT_HOST=spyfall.nilsibox.de
+      - LETSENCRYPT_EMAIL=nils.bauer@posteo.de
+networks:
+    default:
+        external:
+            name: nginx-proxy
